@@ -68,12 +68,10 @@ namespace PegarCrmMedicos
                             await Esperar(500); // Espera meio segundo.
 
                             // A cada 100 registros salva e pausa (pra api dos caras respirar).
-                            //if (crm % 100 == 0)
-                            if (crm == 50)
+                            if (crm % 100 == 0)
                             {
                                 _context.SaveChanges();
-                                break;
-                                //await Esperar(); // Espera 3s
+                                await Esperar(); // Espera 3s
                             }
                         }
                         Console.WriteLine($"\n ======== {uf} ======== ");
