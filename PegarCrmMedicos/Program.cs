@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -23,7 +21,6 @@ namespace PegarCrmMedicos
             {
                 using (var wc = new WebClient())
                 {
-                    var _logCsv = new StringBuilder();
                     foreach (var uf in _siglasEstados)
                     {
                         var haDados = true;
@@ -41,8 +38,8 @@ namespace PegarCrmMedicos
                             {
                                 retries++;
                                 Console.WriteLine($"CRM sem dado: {crm}");
-                                _logCsv.AppendLine($"{crm},{uf}");
                                 crm++;
+                                _context.Logs.Add(new Logs { CRM = crm.ToString(), UF_CRM = uf });
                                 await Esperar(500); // Espera meio segundo.
                                 continue;
                             }
@@ -76,8 +73,6 @@ namespace PegarCrmMedicos
                         }
                         Console.WriteLine($"\n ======== {uf} ======== ");
                     }
-                    var p = Path.GetFullPath(@"csvMedicos");
-                    File.AppendAllText(p, _logCsv.ToString());
                 }
             }
         }
